@@ -271,34 +271,6 @@ void multiWatchPrintUtil(int fd, string cmd)
 }
 
 
-void pooling( vector<command> & procs){
-     for (auto proc : procs)
-    {
-        int childpid = fork();
-
-        if (childpid == 0)
-        {
-            string filename = ".tmp." + to_string(getpid()) + ".txt";
-            int writefd = open(filename.c_str(), O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0666);
-
-            dup2(writefd, STDOUT_FILENO);
-            close(writefd);
-
-            setpgid(0, current_process_group);
-
-            execvp(proc.args[0], proc.args);
-            perror("Exec error: ");
-            exit(EXIT_FAILURE);
-        }
-        if (current_process_group == 0)
-            current_process_group = childpid;
-
-        string filename = ".tmp." + to_string(childpid) + ".txt";
-        int readfd = open(filename.c_str(), O_RDONLY | O_CREAT, 0666);
-
-
-    }
-}
 
 void executeMultiWatch(const char user_input[])
 {
@@ -375,8 +347,7 @@ void executeMultiWatch(const char user_input[])
 
     while (1)
     {
-        pooling();
-        
+   
         char buf[BUF_LEN];
         int readlen = read(inotify_fd, buf, BUF_LEN), it = 0;
         cout<<readlen<<endl;
