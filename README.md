@@ -1,7 +1,7 @@
 
 ## How to build and run? 
 ```
-g++ -std=c++17 main.cpp -o output -lstdc++fs
+g++ -std=c++17 shell.cpp -o output -lstdc++fs
 ```
 
 ## Features 
